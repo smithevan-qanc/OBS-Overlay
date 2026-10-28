@@ -174,12 +174,13 @@
 
   /* Modals */
   html.modal-open, html.modal-open body { overflow: hidden; }
-  dialog { margin: auto; background: var(--panel); color: var(--text); border: 1px solid var(--line2); border-radius: 14px; padding: 0; overscroll-behavior: contain; width: min(720px, calc(100vw - 32px)); max-height: calc(100vh - 48px); box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+  dialog { margin: auto; background: var(--panel); color: var(--text); border: 1px solid var(--line2); border-radius: 14px; padding: 0; overflow: hidden; overscroll-behavior: contain; width: min(720px, calc(100vw - 32px)); max-height: calc(100vh - 48px); box-shadow: 0 30px 80px rgba(0,0,0,.6); }
   dialog::backdrop { background: rgba(0,0,0,.6); backdrop-filter: blur(2px); }
-  .dlg { display: flex; flex-direction: column; max-height: calc(100vh - 48px); }
+  .dlg { display: flex; flex-direction: column; max-height: calc(100vh - 50px); }
+  .dlg header, .dlg footer { flex: none; }
   .dlg header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--line); }
   .dlg header h2 { font-family: var(--display); font-weight: 500; font-size: 20px; letter-spacing: 1.5px; text-transform: uppercase; }
-  .dlg .body { padding: 16px 18px; overflow: auto; display: flex; flex-direction: column; gap: 12px; }
+  .dlg .body { flex: 1 1 auto; min-height: 0; padding: 16px 18px; overflow: auto; display: flex; flex-direction: column; gap: 12px; }
   .dlg footer { padding: 12px 18px; border-top: 1px solid var(--line); display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
   .help { color: var(--muted); font-size: 13px; }
   .help code { background: var(--panel2); padding: 1px 6px; border-radius: 4px; }
