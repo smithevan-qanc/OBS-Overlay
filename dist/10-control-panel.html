@@ -304,7 +304,8 @@
       }
     }
 
-    /* Countdown ring: empties as the auto-remove time runs out; solid circle = stays on */
+    /* Countdown ring: empties as the auto-remove time runs out;
+solid circle = stays on */
     .timer {
       position: relative;
       flex: none;
@@ -1412,7 +1413,8 @@
         </div>
         <p class="help">In OBS: <b>Tools › WebSocket Server Settings</b> › tick <b>Enable WebSocket server</b>, then
           <b>Show Connect Info</b> for the port and password.
-          Use <code>localhost</code> when this panel runs on the streaming computer; otherwise use that computer's IP
+          Use <code>localhost</code> when this panel runs on the streaming computer;
+          otherwise use that computer's IP
           address.
           Keep the channel <code>main</code> unless you run more than one overlay setup.
         </p>
@@ -1547,9 +1549,14 @@
   <script>
 
     const BIBLE = (() => {
-      function norm(s) { return String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/^(i{1,3})\s+/, m => String(m.trim().length)).replace(/[^a-z0-9]/g, ''); }
+      function norm(s) {
+        return String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/^(i{1,3})\s+/, m => String(m.trim().length)).replace(/[^a-z0-9]/g, '');
+      }
       const BOOKS = "Genesis|Génesis|gen ge gn;Exodus|Éxodo|exod exo ex;Leviticus|Levítico|lev le lv;Numbers|Números|num nu nm nb;Deuteronomy|Deuteronomio|deut de dt;Joshua|Josué|josh jos;Judges|Jueces|judg jdg jue;Ruth|Rut|rth ru;1 Samuel|1 Samuel|1sam 1sa 1s;2 Samuel|2 Samuel|2sam 2sa 2s;1 Kings|1 Reyes|1kgs 1ki 1re 1r;2 Kings|2 Reyes|2kgs 2ki 2re 2r;1 Chronicles|1 Crónicas|1chr 1ch 1cr;2 Chronicles|2 Crónicas|2chr 2ch 2cr;Ezra|Esdras|ezr esd;Nehemiah|Nehemías|neh ne;Esther|Ester|esth est;Job|Job|jb;Psalms|Salmos|psalm ps psa pss sal salmo;Proverbs|Proverbios|prov pr prv;Ecclesiastes|Eclesiastés|eccl ecc qoh ec;Song of Solomon|Cantares|song sos songofsongs cant cnt;Isaiah|Isaías|isa is;Jeremiah|Jeremías|jer je;Lamentations|Lamentaciones|lam la;Ezekiel|Ezequiel|ezek eze ez;Daniel|Daniel|dan da dn;Hosea|Oseas|hos os;Joel|Joel|jl;Amos|Amós|am;Obadiah|Abdías|obad ob abd;Jonah|Jonás|jon;Micah|Miqueas|mic mi;Nahum|Nahúm|nah na;Habakkuk|Habacuc|hab;Zephaniah|Sofonías|zeph zep sof;Haggai|Hageo|hag;Zechariah|Zacarías|zech zec zac;Malachi|Malaquías|mal;Matthew|Mateo|matt mt mat;Mark|Marcos|mrk mk mr;Luke|Lucas|luk lk lc;John|Juan|jhn jn;Acts|Hechos|act ac hch;Romans|Romanos|rom ro rm;1 Corinthians|1 Corintios|1cor 1co;2 Corinthians|2 Corintios|2cor 2co;Galatians|Gálatas|gal ga;Ephesians|Efesios|eph ef;Philippians|Filipenses|phil php flp fil;Colossians|Colosenses|col;1 Thessalonians|1 Tesalonicenses|1thess 1th 1ts;2 Thessalonians|2 Tesalonicenses|2thess 2th 2ts;1 Timothy|1 Timoteo|1tim 1ti;2 Timothy|2 Timoteo|2tim 2ti;Titus|Tito|tit;Philemon|Filemón|phlm phm flm;Hebrews|Hebreos|heb he;James|Santiago|jas jm stg;1 Peter|1 Pedro|1pet 1pe 1p;2 Peter|2 Pedro|2pet 2pe 2p;1 John|1 Juan|1jn 1jo;2 John|2 Juan|2jn 2jo;3 John|3 Juan|3jn 3jo;Jude|Judas|jud;Revelation|Apocalipsis|rev re rv apoc ap revelations"
-        .split(';').map((b, i) => { const [en, es, al] = b.split('|'); return { n: i + 1, en, keys: [en, es, ...al.split(' ')].map(norm) }; });
+        .split(';').map((b, i) => {
+          const [en, es, al] = b.split('|');
+          return { n: i + 1, en, keys: [en, es, ...al.split(' ')].map(norm) };
+        });
 
       function parse(r) {
         const m = String(r || '').trim().match(/^(.+?)\s*(\d+)\s*(?:[:.]\s*([\d\s,\-–—]+))?$/);
@@ -1561,7 +1568,9 @@
         const verses = [];
         (m[3] || '').split(',').forEach(part => {
           const [a, b] = part.split(/[\-–—]/).map(x => parseInt(x, 10));
-          if (!isNaN(a)) for (let v = a; v <= (isNaN(b) ? a : b) && v < a + 200; v++) verses.push(v);
+          if (!isNaN(a)) for (let v = a;
+            v <= (isNaN(b) ? a : b) && v < a + 200;
+            v++) verses.push(v);
         });
         return { book: book.n, en: book.en, ch: +m[2], verses, spec: (m[3] || '').replace(/\s+/g, '').replace(/[–—]/g, '-') };
       }
@@ -1574,8 +1583,14 @@
 
       async function getJSON(url) {
         const c = new AbortController(), t = setTimeout(() => c.abort(), 8000);
-        try { const r = await fetch(url, { signal: c.signal }); if (!r.ok) throw new Error(r.status); return await r.json(); }
-        finally { clearTimeout(t); }
+        try {
+          const r = await fetch(url, { signal: c.signal });
+          if (!r.ok) throw new Error(r.status);
+          return await r.json();
+        }
+        finally {
+          clearTimeout(t);
+        }
       }
 
       async function fetchText(p, TR) {
@@ -1588,7 +1603,9 @@
               const txt = data.filter(v => !want || want.has(+v.verse)).sort((a, b) => a.verse - b.verse).map(v => clean(v.text)).join(' ');
               if (txt) return txt;
             }
-          } catch (e) { console.warn('bolls.life lookup failed', code, e); }
+          } catch (e) {
+            console.warn('bolls.life lookup failed', code, e);
+          }
         }
         if (['KJV', 'WEB', 'BBE'].includes(TR)) {
           try {
@@ -1596,7 +1613,9 @@
             const data = await getJSON(`https://bible-api.com/${encodeURIComponent(q)}?translation=${TR.toLowerCase()}`);
             const txt = (data.verses || []).map(v => clean(v.text)).join(' ') || clean(data.text || '');
             if (txt) return txt;
-          } catch (e) { console.warn('bible-api.com lookup failed', e); }
+          } catch (e) {
+            console.warn('bible-api.com lookup failed', e);
+          }
         }
         return null;
       }
@@ -1607,16 +1626,28 @@
       async function lookup(ref, tr, lang) {
         const TR = String(tr || defaultTr(lang)).trim().toUpperCase();
         const key = 'verse:' + TR + ':' + String(ref).trim().toLowerCase();
-        let cached = null; try { cached = localStorage.getItem(key); } catch (e) { }
+        let cached = null;
+        try {
+          cached = localStorage.getItem(key);
+        } catch (e) { }
         const p = parse(ref);
-        if (!p) { console.warn('Could not read verse reference:', ref); return cached; }
+        if (!p) {
+          console.warn('Could not read verse reference:', ref);
+          return cached;
+        }
         const txt = await fetchText(p, TR);
-        if (txt) { try { localStorage.setItem(key, txt); } catch (e) { } }
+        if (txt) {
+          try {
+            localStorage.setItem(key, txt);
+          } catch (e) { }
+        }
         return txt || cached;
       }
 
       function buildRef(book, chapter, verse) {
-        book = String(book || '').trim(); chapter = String(chapter || '').replace(/\s+/g, ''); verse = String(verse || '').replace(/\s+/g, '');
+        book = String(book || '').trim();
+        chapter = String(chapter || '').replace(/\s+/g, '');
+        verse = String(verse || '').replace(/\s+/g, '');
         if (!book || !chapter) return '';
         return book + ' ' + chapter + (verse ? ':' + verse : '');
       }
@@ -1634,26 +1665,52 @@
         const K = new Uint32Array([0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5, 0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174, 0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da, 0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967, 0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85, 0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070, 0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3, 0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2]);
         const H = new Uint32Array([0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19]);
         const l = bytes.length, n = ((l + 9 + 63) >> 6) << 6, m = new Uint8Array(n);
-        m.set(bytes); m[l] = 0x80;
+        m.set(bytes);
+        m[l] = 0x80;
         const dv = new DataView(m.buffer);
-        dv.setUint32(n - 4, (l * 8) >>> 0); dv.setUint32(n - 8, Math.floor(l / 0x20000000));
+        dv.setUint32(n - 4, (l * 8) >>> 0);
+        dv.setUint32(n - 8, Math.floor(l / 0x20000000));
         const W = new Uint32Array(64), r = (x, k) => (x >>> k) | (x << (32 - k));
-        for (let o = 0; o < n; o += 64) {
-          for (let i = 0; i < 16; i++) W[i] = dv.getUint32(o + i * 4);
-          for (let i = 16; i < 64; i++) {
+        for (let o = 0;
+          o < n;
+          o += 64) {
+          for (let i = 0;
+            i < 16;
+            i++) W[i] = dv.getUint32(o + i * 4);
+          for (let i = 16;
+            i < 64;
+            i++) {
             const a = W[i - 15], b = W[i - 2];
             W[i] = (W[i - 16] + (r(a, 7) ^ r(a, 18) ^ (a >>> 3)) + W[i - 7] + (r(b, 17) ^ r(b, 19) ^ (b >>> 10))) >>> 0;
           }
           let [a, b, c, d, e, f, g, h] = H;
-          for (let i = 0; i < 64; i++) {
+          for (let i = 0;
+            i < 64;
+            i++) {
             const t1 = (h + (r(e, 6) ^ r(e, 11) ^ r(e, 25)) + ((e & f) ^ (~e & g)) + K[i] + W[i]) >>> 0;
             const t2 = ((r(a, 2) ^ r(a, 13) ^ r(a, 22)) + ((a & b) ^ (a & c) ^ (b & c))) >>> 0;
-            h = g; g = f; f = e; e = (d + t1) >>> 0; d = c; c = b; b = a; a = (t1 + t2) >>> 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) >>> 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) >>> 0;
           }
-          H[0] += a; H[1] += b; H[2] += c; H[3] += d; H[4] += e; H[5] += f; H[6] += g; H[7] += h;
+          H[0] += a;
+          H[1] += b;
+          H[2] += c;
+          H[3] += d;
+          H[4] += e;
+          H[5] += f;
+          H[6] += g;
+          H[7] += h;
         }
         const out = new Uint8Array(32), ov = new DataView(out.buffer);
-        for (let i = 0; i < 8; i++) ov.setUint32(i * 4, H[i]);
+        for (let i = 0;
+          i < 8;
+          i++) ov.setUint32(i * 4, H[i]);
         return out;
       }
       const enc = s => new TextEncoder().encode(s);
@@ -1666,25 +1723,44 @@
         let ws = null, ready = false, stopped = true, retry = null, delay = 1000, seq = 0;
         const pending = new Map();
         const status = s => o.onStatus && o.onStatus(s);
-        function schedule(ms) { clearTimeout(retry); if (stopped) return; retry = setTimeout(open, ms || delay); delay = Math.min(delay * 2, 10000); }
+        function schedule(ms) {
+          clearTimeout(retry);
+          if (stopped) return;
+          retry = setTimeout(open, ms || delay);
+          delay = Math.min(delay * 2, 10000);
+        }
         function open() {
           clearTimeout(retry);
-          try { ws = new WebSocket(`ws://${o.host || 'localhost'}:${o.port || 4455}`); }
-          catch (e) { status('disconnected'); return schedule(); }
+          try {
+            ws = new WebSocket(`ws://${o.host || 'localhost'}:${o.port || 4455}`);
+          }
+          catch (e) {
+            status('disconnected');
+            return schedule();
+          }
           status('connecting');
           const sock = ws;
           sock.onmessage = ev => {
-            let m; try { m = JSON.parse(ev.data); } catch (e) { return; }
+            let m;
+            try {
+              m = JSON.parse(ev.data);
+            } catch (e) {
+              return;
+            }
             if (m.op === 0) {
               const ident = { op: 1, d: { rpcVersion: 1, eventSubscriptions: o.subs == null ? 1 : o.subs } };
               if (m.d && m.d.authentication) ident.d.authentication = authString(o.password || '', m.d.authentication.salt, m.d.authentication.challenge);
               sock.send(JSON.stringify(ident));
             } else if (m.op === 2) {
-              ready = true; delay = 1000; status('connected'); o.onReady && o.onReady();
+              ready = true;
+              delay = 1000;
+              status('connected');
+              o.onReady && o.onReady();
             } else if (m.op === 5) {
               o.onEvent && o.onEvent(m.d.eventType, m.d.eventData || {});
             } else if (m.op === 7) {
-              const p = pending.get(m.d.requestId); if (!p) return;
+              const p = pending.get(m.d.requestId);
+              if (!p) return;
               pending.delete(m.d.requestId);
               const st = m.d.requestStatus || {};
               st.result ? p.res(m.d.responseData || {}) : p.rej(new Error(st.comment || ('OBS error ' + st.code)));
@@ -1693,7 +1769,8 @@
           sock.onclose = ev => {
             if (sock !== ws) return;
             ready = false;
-            pending.forEach(p => p.rej(new Error('disconnected'))); pending.clear();
+            pending.forEach(p => p.rej(new Error('disconnected')));
+            pending.clear();
             status(ev.code === 4009 ? 'auth-failed' : 'disconnected');
             schedule(ev.code === 4009 ? 10000 : null);
           };
@@ -1701,17 +1778,46 @@
         function request(type, data) {
           return new Promise((res, rej) => {
             if (!ready) return rej(new Error('not connected'));
-            const id = 'r' + (++seq); pending.set(id, { res, rej });
+            const id = 'r' + (++seq);
+            pending.set(id, { res, rej });
             ws.send(JSON.stringify({ op: 6, d: { requestType: type, requestId: id, requestData: data || {} } }));
-            setTimeout(() => { if (pending.has(id)) { pending.delete(id); rej(new Error('timeout')); } }, 5000);
+            setTimeout(() => {
+              if (pending.has(id)) {
+                pending.delete(id);
+                rej(new Error('timeout'));
+              }
+            }, 5000);
           });
         }
         return {
-          connect() { stopped = false; delay = 1000; if (ws) { const old = ws; ws = null; try { old.close(); } catch (e) { } } open(); },
-          close() { stopped = true; clearTimeout(retry); ready = false; if (ws) { const old = ws; ws = null; try { old.close(); } catch (e) { } } status('disconnected'); },
+          connect() {
+            stopped = false;
+            delay = 1000;
+            if (ws) {
+              const old = ws;
+              ws = null;
+              try {
+                old.close();
+              } catch (e) { }
+            } open();
+          },
+          close() {
+            stopped = true;
+            clearTimeout(retry);
+            ready = false;
+            if (ws) {
+              const old = ws;
+              ws = null;
+              try {
+                old.close();
+              } catch (e) { }
+            } status('disconnected');
+          },
           request,
           broadcast: data => request('BroadcastCustomEvent', { eventData: data }),
-          get ready() { return ready; },
+          get ready() {
+            return ready;
+          },
         };
       }
       return { create, sha256, authString };
@@ -1723,8 +1829,19 @@
       const $ = id => document.getElementById(id);
       const Q = new URLSearchParams(location.search);
       const store = {
-        get(k, d) { try { const v = localStorage.getItem('nlc-panel:' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
-        set(k, v) { try { localStorage.setItem('nlc-panel:' + k, JSON.stringify(v)); } catch (e) { } },
+        get(k, d) {
+          try {
+            const v = localStorage.getItem('nlc-panel:' + k);
+            return v == null ? d : JSON.parse(v);
+          } catch (e) {
+            return d;
+          }
+        },
+        set(k, v) {
+          try {
+            localStorage.setItem('nlc-panel:' + k, JSON.stringify(v));
+          } catch (e) { }
+        },
       };
       const ME = 'panel-' + Math.random().toString(36).slice(2, 8);
       const escH = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -1732,14 +1849,26 @@
 
       /* ---------- toast ---------- */
       let toastT;
-      function toast(msg, bad) { const t = $('toast'); t.textContent = msg; t.className = 'show' + (bad ? ' bad' : ''); clearTimeout(toastT); toastT = setTimeout(() => t.className = '', 2600); }
+      function toast(msg, bad) {
+        const t = $('toast');
+        t.textContent = msg;
+        t.className = 'show' + (bad ? ' bad' : '');
+        clearTimeout(toastT);
+        toastT = setTimeout(() => t.className = '', 2600);
+      }
 
       /* ---------- modals ---------- */
       // Lock page scroll while any modal is open (class instead of :has() for older OBS browsers)
       const lockScroll = () => document.documentElement.classList.toggle('modal-open', !!document.querySelector('dialog[open]'));
-      const openDlg = id => { const d = $(id); if (!d.open) d.showModal(); lockScroll(); };
+      const openDlg = id => {
+        const d = $(id);
+        if (!d.open) d.showModal();
+        lockScroll();
+      };
       document.querySelectorAll('dialog').forEach(d => {
-        d.addEventListener('click', e => { if (e.target === d || e.target.closest('[data-close]')) d.close(); });
+        d.addEventListener('click', e => {
+          if (e.target === d || e.target.closest('[data-close]')) d.close();
+        });
         d.addEventListener('close', lockScroll);
       });
 
@@ -1747,14 +1876,21 @@
       function seg(id, value, onChange) {
         const el = $(id);
         const set = v => el.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === v)));
-        el.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; set(b.dataset.v); onChange && onChange(b.dataset.v); });
+        el.addEventListener('click', e => {
+          const b = e.target.closest('button');
+          if (!b) return;
+          set(b.dataset.v);
+          onChange && onChange(b.dataset.v);
+        });
         set(value);
         return { get: () => (el.querySelector('[aria-pressed="true"]') || {}).dataset.v, set };
       }
 
       /* ---------- auto-remove selects ---------- */
       const HOLDS = [[0, 'Stay on'], [5, 'Remove after 5 s'], [8, 'Remove after 8 s'], [10, 'Remove after 10 s'], [15, 'Remove after 15 s'], [30, 'Remove after 30 s']];
-      ['sp-hold', 'v-hold', 'm-hold'].forEach(id => { $(id).innerHTML = HOLDS.map(([v, l]) => `<option value="${v}">${l}</option>`).join(''); });
+      ['sp-hold', 'v-hold', 'm-hold'].forEach(id => {
+        $(id).innerHTML = HOLDS.map(([v, l]) => `<option value="${v}">${l}</option>`).join('');
+      });
       $('midiCh').innerHTML = Array.from({ length: 16 }, (_, i) => `<option value="${i + 1}">Channel ${i + 1}</option>`).join('');
 
       /* =====================================================================
@@ -1773,7 +1909,9 @@
       };
       function newProfile(name, lang) {
         const p = cleanProfile({ id: uid(), name });
-        if (lang === 'es') { p.form['v-lang'] = 'es';['starting', 'brb', 'thanks'].forEach(s => p.screens[s].lang = 'es'); }
+        if (lang === 'es') {
+          p.form['v-lang'] = 'es';['starting', 'brb', 'thanks'].forEach(s => p.screens[s].lang = 'es');
+        }
         return p;
       }
       function cleanProfile(p) {
@@ -1795,7 +1933,10 @@
       let DB = store.get('profiles', null);
       if (!DB || !Array.isArray(DB.list) || !DB.list.length) {
         const en = newProfile('English service', 'en');
-        en.form = store.get('form', {}); en.verses = store.get('verses', []); en.lookedUp = store.get('lookedUp', '');   // keep earlier work
+        en.form = store.get('form', {});
+        en.verses = store.get('verses', []);
+        en.lookedUp = store.get('lookedUp', '');
+        // keep earlier work
         DB = { active: en.id, list: [en, newProfile('Servicio en español', 'es')] };
       }
       DB.list = DB.list.map(cleanProfile);
@@ -1816,12 +1957,28 @@
       const FIELDS = ['sp-name', 'sp-title', 'sp-hold', 'v-book', 'v-chapter', 'v-verse', 'v-tr', 'v-lang', 'v-text', 'v-hold', 'm-1', 'm-2', 'm-hold'];
       function loadFields() {
         const f = prof().form || {};
-        FIELDS.forEach(id => { const el = $(id); el.value = f[id] != null ? f[id] : (el.tagName === 'SELECT' ? el.options[0].value : ''); });
+        FIELDS.forEach(id => {
+          const el = $(id);
+          el.value = f[id] != null ? f[id] : (el.tagName === 'SELECT' ? el.options[0].value : '');
+        });
       }
       loadFields();
-      FIELDS.forEach(id => { $(id).addEventListener('input', saveForm); $(id).addEventListener('change', saveForm); });
-      const mPos = seg('m-pos', prof().form['m-pos'] || 'bottom', () => { saveForm(); renderPos(); previewAll(); });
-      function saveForm() { const o = {}; FIELDS.forEach(id => o[id] = $(id).value); o['m-pos'] = mPos ? mPos.get() : 'bottom'; prof().form = o; saveDB(); }
+      FIELDS.forEach(id => {
+        $(id).addEventListener('input', saveForm);
+        $(id).addEventListener('change', saveForm);
+      });
+      const mPos = seg('m-pos', prof().form['m-pos'] || 'bottom', () => {
+        saveForm();
+        renderPos();
+        previewAll();
+      });
+      function saveForm() {
+        const o = {};
+        FIELDS.forEach(id => o[id] = $(id).value);
+        o['m-pos'] = mPos ? mPos.get() : 'bottom';
+        prof().form = o;
+        saveDB();
+      }
 
       /* =====================================================================
          Positions: Top / Right / Bottom / Left (px on the 1920×1080 output)
@@ -1834,7 +1991,9 @@
       const posKey = box => (box === 'message' && mPos.get() === 'top' ? 'messageTop' : box);
       const posOf = key => {
         const p = prof().positions[key] || {}, o = {};
-        SIDES.forEach(s => { if (p[s] !== '' && p[s] != null && !isNaN(+p[s])) o[s] = +p[s]; });
+        SIDES.forEach(s => {
+          if (p[s] !== '' && p[s] != null && !isNaN(+p[s])) o[s] = +p[s];
+        });
         return Object.keys(o).length ? o : null;
       };
       function posSummary(key) {
@@ -1855,17 +2014,24 @@
         });
       }
       document.addEventListener('input', e => {
-        const inp = e.target.closest('details.posbox input'); if (!inp) return;
+        const inp = e.target.closest('details.posbox input');
+        if (!inp) return;
         const box = inp.closest('details.posbox'), key = posKey(box.dataset.pos);
         const p = prof().positions[key] = prof().positions[key] || {};
-        const v = inp.value.trim(); if (v === '' || isNaN(+v)) delete p[inp.dataset.side]; else p[inp.dataset.side] = +v;
-        saveDB(); box.querySelector('.possum').textContent = posSummary(key);
+        const v = inp.value.trim();
+        if (v === '' || isNaN(+v)) delete p[inp.dataset.side];
+        else p[inp.dataset.side] = +v;
+        saveDB();
+        box.querySelector('.possum').textContent = posSummary(key);
         if (box.dataset.pos === 'watermark') sendWatermark();
       });
       document.addEventListener('click', e => {
-        const b = e.target.closest('details.posbox [data-reset]'); if (!b) return;
+        const b = e.target.closest('details.posbox [data-reset]');
+        if (!b) return;
         const box = b.closest('details.posbox'), key = posKey(box.dataset.pos);
-        delete prof().positions[key]; saveDB(); renderPos();
+        delete prof().positions[key];
+        saveDB();
+        renderPos();
         if (box.dataset.pos === 'watermark') sendWatermark();
       });
 
@@ -1877,30 +2043,46 @@
       function noteNum(v) {
         v = String(v == null ? '' : v).trim();
         if (v === '') return null;
-        if (/^\d{1,3}$/.test(v)) { const n = +v; return n <= 127 ? n : null; }
+        if (/^\d{1,3}$/.test(v)) {
+          const n = +v;
+          return n <= 127 ? n : null;
+        }
         const m = v.match(/^([A-Ga-g])\s*([#♯b♭]?)\s*(-?\d+)$/);
         if (!m) return null;
         let st = NOTE_NAMES.indexOf(m[1].toUpperCase());
-        if (m[2] === '#' || m[2] === '♯') st++; if (m[2] === 'b' || m[2] === '♭') st--;
+        if (m[2] === '#' || m[2] === '♯') st++;
+        if (m[2] === 'b' || m[2] === '♭') st--;
         const n = (+m[3] + octOffset()) * 12 + st;
         return n >= 0 && n <= 127 ? n : null;
       }
       const noteName = n => NOTE_NAMES[n % 12] + (Math.floor(n / 12) - octOffset());
-      const midiLabel = m => { const n = noteNum(m && m.note); return n == null ? '' : `${noteName(n)} · ${m.vel || 1}`; };
+      const midiLabel = m => {
+        const n = noteNum(m && m.note);
+        return n == null ? '' : `${noteName(n)} · ${m.vel || 1}`;
+      };
 
       let midiAccess = null;
       async function midiStart(ask) {
-        if (!navigator.requestMIDIAccess) { $('midiStatus').textContent = 'This browser can’t send MIDI — open the panel in Chrome or Edge.'; return false; }
+        if (!navigator.requestMIDIAccess) {
+          $('midiStatus').textContent = 'This browser can’t send MIDI — open the panel in Chrome or Edge.';
+          return false;
+        }
         try {
           midiAccess = await navigator.requestMIDIAccess({ sysex: false });
           midiAccess.onstatechange = renderMidiOuts;
-          DEV.midiOn = true; saveDev(); renderMidiOuts(); return true;
+          DEV.midiOn = true;
+          saveDev();
+          renderMidiOuts();
+          return true;
         } catch (e) {
           if (ask) toast('MIDI was blocked: ' + e.message, true);
-          $('midiStatus').textContent = 'MIDI permission was not given.'; return false;
+          $('midiStatus').textContent = 'MIDI permission was not given.';
+          return false;
         }
       }
-      function outputs() { return midiAccess ? [...midiAccess.outputs.values()] : []; }
+      function outputs() {
+        return midiAccess ? [...midiAccess.outputs.values()] : [];
+      }
       function renderMidiOuts() {
         const outs = outputs();
         $('midiOut').innerHTML = '<option value="">— none —</option>' + outs.map(o => `<option${o.name === DEV.midiOut ? ' selected' : ''}>${escH(o.name)}</option>`).join('');
@@ -1911,25 +2093,50 @@
         $('midiDot').classList.toggle('on', ok && outs.some(o => o.name === DEV.midiOut));
       }
       $('midiEnable').onclick = () => midiStart(true);
-      $('midiOut').onchange = e => { DEV.midiOut = e.target.value.replace(/ \(not found\)$/, ''); saveDev(); renderMidiOuts(); };
-      $('midiNaming').onchange = e => { DEV.naming = e.target.value; saveDev(); renderMidiMap(); renderList(); };
-      $('midiCh').onchange = e => { prof().midi.channel = +e.target.value; saveDB(); };
+      $('midiOut').onchange = e => {
+        DEV.midiOut = e.target.value.replace(/ \(not found\)$/, '');
+        saveDev();
+        renderMidiOuts();
+      };
+      $('midiNaming').onchange = e => {
+        DEV.naming = e.target.value;
+        saveDev();
+        renderMidiMap();
+        renderList();
+      };
+      $('midiCh').onchange = e => {
+        prof().midi.channel = +e.target.value;
+        saveDB();
+      };
 
       /* send({note, vel, ch}) -> note on, then note off */
       function midiSend(m, why) {
-        const n = noteNum(m && m.note); if (n == null) return false;
+        const n = noteNum(m && m.note);
+        if (n == null) return false;
         const out = outputs().find(o => o.name === DEV.midiOut);
         const vel = Math.max(0, Math.min(127, parseInt(m.vel, 10) || 1));
         const ch = Math.max(1, Math.min(16, parseInt(m.ch, 10) || prof().midi.channel || 1));
         const line = `${why || 'MIDI'}: ${noteName(n)} (note ${n}) · velocity ${vel} · channel ${ch}`;
-        if (!out) { $('midiLast').textContent = 'Not sent (no MIDI output chosen) — ' + line; return false; }
+        if (!out) {
+          $('midiLast').textContent = 'Not sent (no MIDI output chosen) — ' + line;
+          return false;
+        }
         try {
           out.send([0x90 | (ch - 1), n, vel]);
-          setTimeout(() => { try { out.send([0x80 | (ch - 1), n, 0]); } catch (e) { } }, 120);
+          setTimeout(() => {
+            try {
+              out.send([0x80 | (ch - 1), n, 0]);
+            } catch (e) { }
+          }, 120);
           $('midiLast').textContent = 'Last sent — ' + line;
-          const b = $('midiBtn'); b.classList.add('sent'); setTimeout(() => b.classList.remove('sent'), 400);
+          const b = $('midiBtn');
+          b.classList.add('sent');
+          setTimeout(() => b.classList.remove('sent'), 400);
           return true;
-        } catch (e) { toast('MIDI error: ' + e.message, true); return false; }
+        } catch (e) {
+          toast('MIDI error: ' + e.message, true);
+          return false;
+        }
       }
       const ACTIONS = [
         ['show:speaker', 'Speaker — Show'], ['remove:speaker', 'Speaker — Remove'],
@@ -1939,7 +2146,9 @@
         ['screen:starting', 'Starting Soon — Show'], ['screen:brb', 'Be Right Back — Show'], ['screen:thanks', 'Thank You — Show'],
       ];
       const actionMidi = key => prof().midi.actions[key];
-      function midiFor(key, item) { return item && item.midi && noteNum(item.midi.note) != null ? item.midi : actionMidi(key); }
+      function midiFor(key, item) {
+        return item && item.midi && noteNum(item.midi.note) != null ? item.midi : actionMidi(key);
+      }
       function renderMidiMap() {
         $('midiCh').value = String(prof().midi.channel || 1);
         $('midiNaming').value = DEV.naming;
@@ -1953,29 +2162,43 @@
         }).join('');
       }
       $('midiMap').addEventListener('input', e => {
-        const tr = e.target.closest('tr'); if (!tr) return;
+        const tr = e.target.closest('tr');
+        if (!tr) return;
         const m = prof().midi.actions[tr.dataset.k] = prof().midi.actions[tr.dataset.k] || {};
         m[e.target.dataset.f] = e.target.value.trim();
         if (!m.note && !m.vel) delete prof().midi.actions[tr.dataset.k];
         saveDB();
-        const n = noteNum(m.note); tr.querySelector('.num').textContent = n == null ? (m.note ? 'not a note' : '') : 'note ' + n;
+        const n = noteNum(m.note);
+        tr.querySelector('.num').textContent = n == null ? (m.note ? 'not a note' : '') : 'note ' + n;
       });
       $('midiMap').addEventListener('click', e => {
-        const b = e.target.closest('[data-test]'); if (!b) return;
+        const b = e.target.closest('[data-test]');
+        if (!b) return;
         const k = b.closest('tr').dataset.k;
         if (!midiSend(actionMidi(k), 'Test')) toast(noteNum((actionMidi(k) || {}).note) == null ? 'Enter a note first' : 'Choose a MIDI output first', true);
       });
-      $('midiBtn').onclick = () => { renderMidiMap(); renderMidiOuts(); openDlg('dlg-midi'); };
+      $('midiBtn').onclick = () => {
+        renderMidiMap();
+        renderMidiOuts();
+        openDlg('dlg-midi');
+      };
 
       /* =====================================================================
          Previews (09-live-graphics.html in preview mode)
          ===================================================================== */
       const PV = {};
-      document.querySelectorAll('iframe[data-pv]').forEach(f => { PV[f.dataset.pv] = f; f.src = '09-live-graphics.html?preview=1'; f.addEventListener('load', () => setTimeout(previewAll, 50)); });
+      document.querySelectorAll('iframe[data-pv]').forEach(f => {
+        PV[f.dataset.pv] = f;
+        f.src = '09-live-graphics.html?preview=1';
+        f.addEventListener('load', () => setTimeout(previewAll, 50));
+      });
       window.addEventListener('message', e => {
         const m = e.data || {};
         if (m.type === 'nlc-preview-ready') previewAll();
-        if (m.type === 'nlc-preview-size') { const f = Object.values(PV).find(x => x.contentWindow === e.source); if (f && m.height > 0) f.style.height = m.height + 'px'; }
+        if (m.type === 'nlc-preview-size') {
+          const f = Object.values(PV).find(x => x.contentWindow === e.source);
+          if (f && m.height > 0) f.style.height = m.height + 'px';
+        }
       });
       const val = id => $(id).value.trim() || $(id).placeholder;
       function previewData(g) {
@@ -1983,49 +2206,102 @@
         if (g === 'message') return { line1: val('m-1'), line2: $('m-2').value.trim(), position: mPos.get() };
         if (g === 'verse') return { text: $('v-text').value.trim() || 'The verse text will appear here after “Look up”.', reference: (vRef() || 'John 3:16') + ' · ' + vTr() };
       }
-      function preview(g) { const f = PV[g]; if (f && f.contentWindow) f.contentWindow.postMessage({ type: 'nlc-preview', graphic: g, data: previewData(g) }, '*'); }
-      function previewAll() { Object.keys(PV).forEach(preview); }
+      function preview(g) {
+        const f = PV[g];
+        if (f && f.contentWindow) f.contentWindow.postMessage({ type: 'nlc-preview', graphic: g, data: previewData(g) }, '*');
+      }
+      function previewAll() {
+        Object.keys(PV).forEach(preview);
+      }
       [['speaker', ['sp-name', 'sp-title']], ['verse', ['v-book', 'v-chapter', 'v-verse', 'v-tr', 'v-lang', 'v-text']], ['message', ['m-1', 'm-2']]]
-        .forEach(([g, ids]) => ids.forEach(id => { $(id).addEventListener('input', () => preview(g)); $(id).addEventListener('change', () => preview(g)); }));
+        .forEach(([g, ids]) => ids.forEach(id => {
+          $(id).addEventListener('input', () => preview(g));
+          $(id).addEventListener('change', () => preview(g));
+        }));
 
       /* =====================================================================
          OBS connection
          ===================================================================== */
-      $('host').value = DEV.host; $('port').value = DEV.port; $('pw').value = DEV.pw; $('channel').value = DEV.channel;
+      $('host').value = DEV.host;
+      $('port').value = DEV.port;
+      $('pw').value = DEV.pw;
+      $('channel').value = DEV.channel;
       $('settingsBtn').onclick = () => openDlg('dlg-connection');
 
       let client = null, overlays = new Map(), screensSeen = new Map(), current = null, programScene = null, sceneNames = [];
       const CH = () => DEV.channel || 'main';
-      function setPill(id, cls, text) { const p = $(id); p.className = 'pill ' + (cls || ''); p.querySelector('span').textContent = text; }
+      function setPill(id, cls, text) {
+        const p = $(id);
+        p.className = 'pill ' + (cls || '');
+        p.querySelector('span').textContent = text;
+      }
       function connect() {
-        DEV.host = $('host').value.trim() || 'localhost'; DEV.port = $('port').value.trim() || '4455';
-        DEV.pw = $('pw').value; DEV.channel = $('channel').value.trim() || 'main';
+        DEV.host = $('host').value.trim() || 'localhost';
+        DEV.port = $('port').value.trim() || '4455';
+        DEV.pw = $('pw').value;
+        DEV.channel = $('channel').value.trim() || 'main';
         saveDev();
         if (client) client.close();
-        overlays.clear(); screensSeen.clear(); updateOverlayPill();
+        overlays.clear();
+        screensSeen.clear();
+        updateOverlayPill();
         client = OBSWS.create({
           host: DEV.host, port: DEV.port, password: DEV.pw, subs: 1 | 4,   // General + Scenes events
           onStatus: s => {
             const map = { connecting: ['warn', 'OBS: connecting…'], connected: ['ok', 'OBS: connected'], disconnected: ['bad', 'OBS: not connected'], 'auth-failed': ['bad', 'OBS: wrong password'] };
-            const [c, t] = map[s] || ['', s]; setPill('obsPill', c, t);
-            if (s === 'auth-failed') { openDlg('dlg-connection'); toast('OBS rejected the password — check Connection', true); }
-            if (s !== 'connected') { overlays.clear(); updateOverlayPill(); $('pgmNote').textContent = 'Connect to OBS'; $('pgmImg').removeAttribute('src'); }
+            const [c, t] = map[s] || ['', s];
+            setPill('obsPill', c, t);
+            if (s === 'auth-failed') {
+              openDlg('dlg-connection');
+              toast('OBS rejected the password — check Connection', true);
+            }
+            if (s !== 'connected') {
+              overlays.clear();
+              updateOverlayPill();
+              $('pgmNote').textContent = 'Connect to OBS';
+              $('pgmImg').removeAttribute('src');
+            }
           },
-          onReady: () => { ping(); loadScenes(); sendWatermark(true); },
+          onReady: () => {
+            ping();
+            loadScenes();
+            sendWatermark(true);
+          },
           onEvent,
         });
         client.connect();
       }
-      $('connectBtn').onclick = () => { connect(); $('dlg-connection').close(); toast('Connecting to OBS…'); };
-      $('disconnectBtn').onclick = () => { if (client) client.close(); };
+      $('connectBtn').onclick = () => {
+        connect();
+        $('dlg-connection').close();
+        toast('Connecting to OBS…');
+      };
+      $('disconnectBtn').onclick = () => {
+        if (client) client.close();
+      };
 
       function send(msg, quiet) {
-        if (!client || !client.ready) { if (!quiet) toast('Not connected to OBS', true); return Promise.reject(); }
+        if (!client || !client.ready) {
+          if (!quiet) toast('Not connected to OBS', true);
+          return Promise.reject();
+        }
         return client.broadcast(Object.assign({ app: NLC_APP, channel: CH(), role: 'panel', from: ME }, msg))
-          .catch(e => { if (!quiet) toast('OBS error: ' + e.message, true); throw e; });
+          .catch(e => {
+            if (!quiet) toast('OBS error: ' + e.message, true);
+            throw e;
+          });
       }
-      function ping() { overlays.clear(); send({ action: 'ping' }, true).catch(() => { }); setTimeout(() => { updateOverlayPill(); renderScreenFound(); }, 1500); }
-      setInterval(() => { if (client && client.ready) ping(); }, 20000);
+      function ping() {
+        overlays.clear();
+        send({ action: 'ping' }, true).catch(() => { });
+        setTimeout(() => {
+          updateOverlayPill();
+          renderScreenFound();
+        }, 1500);
+      }
+      setInterval(() => {
+        if (client && client.ready) ping();
+      }, 20000);
       function updateOverlayPill() {
         if (!client || !client.ready) return setPill('ovPill', '', 'Overlay: —');
         const n = overlays.size;
@@ -2037,7 +2313,8 @@
         if (/^Scene(ListChanged|NameChanged|Created|Removed)$/.test(type)) return loadScenes();
         if (type !== 'CustomEvent' || !d || d.app !== NLC_APP || d.channel !== CH()) return;
         if (d.role === 'screen') {
-          screensSeen.set(d.screen, Date.now()); renderScreenFound();
+          screensSeen.set(d.screen, Date.now());
+          renderScreenFound();
           if (d.action === 'hello') {
             const a = prof().screens[d.screen] && prof().screens[d.screen].applied;
             if (a && a.rev !== d.rev) send({ action: 'screen', to: d.from, screen: d.screen, settings: a.settings, rev: a.rev }, true).catch(() => { });
@@ -2045,7 +2322,8 @@
           return;
         }
         if (d.role !== 'overlay') return;
-        overlays.set(d.from, Date.now()); updateOverlayPill();
+        overlays.set(d.from, Date.now());
+        updateOverlayPill();
         if (d.action === 'hello') {
           const showing = current && { graphic: current.graphic, data: current.data, remaining: current.endAt ? Math.max(0, (current.endAt - Date.now()) / 1000) : 0 };
           send({ action: 'state', to: d.from, showing, watermark: prof().watermark, watermarkPos: posOf('watermark') }, true).catch(() => { });
@@ -2065,23 +2343,36 @@
         data = Object.assign({}, data, { pos: posOf(graphic === 'message' && data.position === 'top' ? 'messageTop' : graphic) });
         return send({ action: 'show', graphic, data, hold: +hold || 0 }).then(() => {
           hold = +hold || 0;
-          current = { graphic, data, hold, endAt: hold > 0 ? Date.now() + hold * 1000 : 0 }; renderOnAir();
+          current = { graphic, data, hold, endAt: hold > 0 ? Date.now() + hold * 1000 : 0 };
+          renderOnAir();
           if (!overlays.size) toast('Sent — but no live-graphics overlay is connected in OBS', true);
         }).catch(() => { });
       }
       function remove(graphic) {
         midiSend(actionMidi(graphic ? 'remove:' + graphic : 'remove:all'), graphic ? 'Remove ' + graphic : 'Remove all');
         return send(graphic ? { action: 'hide', graphic } : { action: 'hide' }).then(() => {
-          if (!graphic || (current && current.graphic === graphic)) { current = null; renderOnAir(); }
+          if (!graphic || (current && current.graphic === graphic)) {
+            current = null;
+            renderOnAir();
+          }
         }).catch(() => { });
       }
       document.querySelectorAll('[data-remove]').forEach(b => b.onclick = () => remove(b.dataset.remove));
       $('hideAll').onclick = () => remove();
-      document.addEventListener('keydown', e => { if (e.key === 'Escape' && !document.querySelector('dialog[open]') && !e.target.closest('input, textarea, select')) remove(); });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && !document.querySelector('dialog[open]') && !e.target.closest('input, textarea, select')) remove();
+      });
 
       /* Watermark */
-      const wmMode = seg('wm-mode', prof().watermark, v => { prof().watermark = v; saveDB(); sendWatermark(); renderOnAir(); });
-      function sendWatermark(quiet) { send({ action: 'watermark', mode: prof().watermark, pos: posOf('watermark') }, true).catch(() => { }); }
+      const wmMode = seg('wm-mode', prof().watermark, v => {
+        prof().watermark = v;
+        saveDB();
+        sendWatermark();
+        renderOnAir();
+      });
+      function sendWatermark(quiet) {
+        send({ action: 'watermark', mode: prof().watermark, pos: posOf('watermark') }, true).catch(() => { });
+      }
 
       /* On-screen banner + countdown ring */
       function describe(c) {
@@ -2096,7 +2387,11 @@
       function tickTimer() {
         const t = $('timer');
         if (!current) return;
-        if (!current.endAt) { t.classList.add('solid'); t.title = 'Stays on until removed'; return; }
+        if (!current.endAt) {
+          t.classList.add('solid');
+          t.title = 'Stays on until removed';
+          return;
+        }
         t.classList.remove('solid');
         const left = Math.max(0, (current.endAt - Date.now()) / 1000);
         $('timerArc').style.strokeDashoffset = C * (1 - left / (current.hold || 1));
@@ -2109,24 +2404,48 @@
         tickTimer();
         $('onair').classList.toggle('live', live);
         $('onairTag').textContent = live ? 'On screen now' : 'On screen';
-        if (live) { const [k, v] = describe(current); $('onairWhat').innerHTML = `${escH(k)} <small>${escH(v)}</small>`; }
+        if (live) {
+          const [k, v] = describe(current);
+          $('onairWhat').innerHTML = `${escH(k)} <small>${escH(v)}</small>`;
+        }
         else $('onairWhat').innerHTML = prof().watermark === 'auto' ? 'Nothing <small>— watermark showing</small>' : 'Nothing';
         ['speaker', 'verse', 'message'].forEach(g => $('card-' + g).classList.toggle('showing', live && current.graphic === g));
         renderList();
       }
 
-      function need(id) { const el = $(id); if (el.value.trim()) return true; el.classList.add('err'); el.focus(); setTimeout(() => el.classList.remove('err'), 1500); return false; }
+      function need(id) {
+        const el = $(id);
+        if (el.value.trim()) return true;
+        el.classList.add('err');
+        el.focus();
+        setTimeout(() => el.classList.remove('err'), 1500);
+        return false;
+      }
 
       /* Speaker + message cards */
-      $('sp-show').onclick = () => { if (!need('sp-name')) return; show('speaker', { name: $('sp-name').value.trim(), title: $('sp-title').value.trim() }, $('sp-hold').value); };
-      $('m-show').onclick = () => { if (!need('m-1')) return; show('message', { line1: $('m-1').value.trim(), line2: $('m-2').value.trim(), position: mPos.get() }, $('m-hold').value); };
+      $('sp-show').onclick = () => {
+        if (!need('sp-name')) return;
+        show('speaker', { name: $('sp-name').value.trim(), title: $('sp-title').value.trim() }, $('sp-hold').value);
+      };
+      $('m-show').onclick = () => {
+        if (!need('m-1')) return;
+        show('message', { line1: $('m-1').value.trim(), line2: $('m-2').value.trim(), position: mPos.get() }, $('m-hold').value);
+      };
 
       /* Verse card */
-      function vRef() { return BIBLE.buildRef($('v-book').value, $('v-chapter').value, $('v-verse').value); }
-      function vTr() { return ($('v-tr').value.trim() || BIBLE.defaultTr($('v-lang').value)).toUpperCase(); }
+      function vRef() {
+        return BIBLE.buildRef($('v-book').value, $('v-chapter').value, $('v-verse').value);
+      }
+      function vTr() {
+        return ($('v-tr').value.trim() || BIBLE.defaultTr($('v-lang').value)).toUpperCase();
+      }
       let lookedUp = prof().lookedUp || '';
       const vKey = () => vRef() + '|' + vTr();
-      const setLooked = () => { lookedUp = vKey(); prof().lookedUp = lookedUp; saveDB(); };
+      const setLooked = () => {
+        lookedUp = vKey();
+        prof().lookedUp = lookedUp;
+        saveDB();
+      };
       function updateRefLine() {
         const r = vRef();
         $('v-ref').textContent = r ? r + ' · ' + vTr() : '';
@@ -2139,12 +2458,27 @@
 
       async function doLookup() {
         const r = vRef();
-        if (!r) { need($('v-book').value.trim() ? 'v-chapter' : 'v-book'); return null; }
-        if (!BIBLE.parse(r)) { toast('Book name not recognised: ' + $('v-book').value, true); need('v-book'); return null; }
-        const btn = $('v-lookup'); btn.disabled = true; btn.textContent = 'Looking up…';
+        if (!r) {
+          need($('v-book').value.trim() ? 'v-chapter' : 'v-book');
+          return null;
+        }
+        if (!BIBLE.parse(r)) {
+          toast('Book name not recognised: ' + $('v-book').value, true);
+          need('v-book');
+          return null;
+        }
+        const btn = $('v-lookup');
+        btn.disabled = true;
+        btn.textContent = 'Looking up…';
         const txt = await BIBLE.lookup(r, vTr(), $('v-lang').value);
-        btn.disabled = false; btn.textContent = 'Look up';
-        if (txt) { $('v-text').value = txt; setLooked(); saveForm(); preview('verse'); }
+        btn.disabled = false;
+        btn.textContent = 'Look up';
+        if (txt) {
+          $('v-text').value = txt;
+          setLooked();
+          saveForm();
+          preview('verse');
+        }
         else toast('Could not find that verse online — check the translation code, or type the text', true);
         return txt;
       }
@@ -2153,9 +2487,15 @@
       async function showVerse(item) {
         const v = item || { book: $('v-book').value, chapter: $('v-chapter').value, verse: $('v-verse').value, tr: vTr(), lang: $('v-lang').value, text: null };
         const ref = BIBLE.buildRef(v.book, v.chapter, v.verse);
-        if (!ref) { need($('v-book').value.trim() ? 'v-chapter' : 'v-book'); return; }
+        if (!ref) {
+          need($('v-book').value.trim() ? 'v-chapter' : 'v-book');
+          return;
+        }
         let text = v.text;
-        if (!item) { text = $('v-text').value.trim(); if (!text || lookedUp !== vKey()) text = await doLookup(); }
+        if (!item) {
+          text = $('v-text').value.trim();
+          if (!text || lookedUp !== vKey()) text = await doLookup();
+        }
         else if (!text) text = await BIBLE.lookup(ref, v.tr, v.lang);
         show('verse', { text: text || '', reference: ref + ' · ' + v.tr, translation: v.tr, lang: v.lang }, $('v-hold').value, item);
       }
@@ -2170,7 +2510,8 @@
         verses: { list: 'v-list', title: v => BIBLE.buildRef(v.book, v.chapter, v.verse) + ' · ' + v.tr, sub: v => v.text || '(text will be looked up)', graphic: 'verse' },
       };
       function isShowing(kind, v) {
-        if (!current) return false; const d = current.data || {};
+        if (!current) return false;
+        const d = current.data || {};
         if (kind === 'speakers') return current.graphic === 'speaker' && d.name === v.name && (d.title || '') === (v.title || '');
         if (kind === 'messages') return current.graphic === 'message' && d.line1 === v.line1 && (d.line2 || '') === (v.line2 || '') && (d.position || 'bottom') === (v.position || 'bottom');
         if (kind === 'verses') return current.graphic === 'verse' && d.reference === LISTS.verses.title(v);
@@ -2190,34 +2531,76 @@
         if (kind === 'verses') showVerse(v);
       }
       function loadItem(kind, v) {
-        if (kind === 'speakers') { $('sp-name').value = v.name; $('sp-title').value = v.title || ''; preview('speaker'); }
-        if (kind === 'messages') { $('m-1').value = v.line1; $('m-2').value = v.line2 || ''; mPos.set(v.position || 'bottom'); renderPos(); preview('message'); }
-        if (kind === 'verses') { $('v-book').value = v.book; $('v-chapter').value = v.chapter; $('v-verse').value = v.verse; $('v-tr').value = v.tr; $('v-lang').value = v.lang || 'en'; $('v-text').value = v.text || ''; updateRefLine(); setLooked(); preview('verse'); }
+        if (kind === 'speakers') {
+          $('sp-name').value = v.name;
+          $('sp-title').value = v.title || '';
+          preview('speaker');
+        }
+        if (kind === 'messages') {
+          $('m-1').value = v.line1;
+          $('m-2').value = v.line2 || '';
+          mPos.set(v.position || 'bottom');
+          renderPos();
+          preview('message');
+        }
+        if (kind === 'verses') {
+          $('v-book').value = v.book;
+          $('v-chapter').value = v.chapter;
+          $('v-verse').value = v.verse;
+          $('v-tr').value = v.tr;
+          $('v-lang').value = v.lang || 'en';
+          $('v-text').value = v.text || '';
+          updateRefLine();
+          setLooked();
+          preview('verse');
+        }
         saveForm();
       }
       Object.entries(LISTS).forEach(([kind, L]) => {
         $(L.list).addEventListener('click', e => {
-          const b = e.target.closest('button'); if (!b) return; const arr = prof()[kind];
+          const b = e.target.closest('button');
+          if (!b) return;
+          const arr = prof()[kind];
           if (b.dataset.show) showItem(kind, arr[+b.dataset.show]);
-          if (b.dataset.del) { arr.splice(+b.dataset.del, 1); saveDB(); renderList(); }
+          if (b.dataset.del) {
+            arr.splice(+b.dataset.del, 1);
+            saveDB();
+            renderList();
+          }
           if (b.dataset.edit) openItem(kind, +b.dataset.edit);
         });
       });
-      $('sp-save').onclick = () => { if (!need('sp-name')) return; prof().speakers.push({ name: $('sp-name').value.trim(), title: $('sp-title').value.trim() }); saveDB(); renderList(); toast('Saved ' + $('sp-name').value.trim()); };
-      $('m-save').onclick = () => { if (!need('m-1')) return; prof().messages.push({ line1: $('m-1').value.trim(), line2: $('m-2').value.trim(), position: mPos.get() }); saveDB(); renderList(); toast('Saved message'); };
+      $('sp-save').onclick = () => {
+        if (!need('sp-name')) return;
+        prof().speakers.push({ name: $('sp-name').value.trim(), title: $('sp-title').value.trim() });
+        saveDB();
+        renderList();
+        toast('Saved ' + $('sp-name').value.trim());
+      };
+      $('m-save').onclick = () => {
+        if (!need('m-1')) return;
+        prof().messages.push({ line1: $('m-1').value.trim(), line2: $('m-2').value.trim(), position: mPos.get() });
+        saveDB();
+        renderList();
+        toast('Saved message');
+      };
       $('v-save').onclick = async () => {
-        const ref = vRef(); if (!ref) return need('v-book');
+        const ref = vRef();
+        if (!ref) return need('v-book');
         let text = $('v-text').value.trim();
         if (!text || lookedUp !== vKey()) text = await doLookup();
         prof().verses.push({ book: $('v-book').value.trim(), chapter: $('v-chapter').value.trim(), verse: $('v-verse').value.trim(), tr: vTr(), lang: $('v-lang').value, text: text || '' });
-        saveDB(); renderList(); toast('Saved ' + ref);
+        saveDB();
+        renderList();
+        toast('Saved ' + ref);
       };
 
       /* Edit modal for one saved item (content + its own MIDI note) */
       let editing = null;
       const F = (id, label, value, extra) => `<div><label for="${id}">${label}</label><input id="${id}" value="${escH(value == null ? '' : value)}" ${extra || ''}></div>`;
       function openItem(kind, i) {
-        const v = prof()[kind][i]; if (!v) return;
+        const v = prof()[kind][i];
+        if (!v) return;
         editing = { kind, i };
         const m = v.midi || {};
         let html = '';
@@ -2234,9 +2617,15 @@
       <p class="muted" id="it-notehelp"></p>`;
         $('it-title').textContent = 'Edit ' + kind.slice(0, -1);
         $('it-body').innerHTML = html;
-        const help = () => { const n = noteNum($('it-note').value); $('it-notehelp').textContent = $('it-note').value.trim() ? (n == null ? 'Not a note — use a name like G-1 or a number 0–127.' : `Sends note ${n} (${noteName(n)}) when you press Show on this item.`) : 'No note: uses the card’s “Show” note from the MIDI settings (if any).'; };
-        $('it-note').addEventListener('input', help); help();
-        $('it-test').onclick = () => { if (!midiSend({ note: $('it-note').value, vel: $('it-vel').value, ch: $('it-ch2').value }, 'Test')) toast('Enter a note and choose a MIDI output first', true); };
+        const help = () => {
+          const n = noteNum($('it-note').value);
+          $('it-notehelp').textContent = $('it-note').value.trim() ? (n == null ? 'Not a note — use a name like G-1 or a number 0–127.' : `Sends note ${n} (${noteName(n)}) when you press Show on this item.`) : 'No note: uses the card’s “Show” note from the MIDI settings (if any).';
+        };
+        $('it-note').addEventListener('input', help);
+        help();
+        $('it-test').onclick = () => {
+          if (!midiSend({ note: $('it-note').value, vel: $('it-vel').value, ch: $('it-ch2').value }, 'Test')) toast('Enter a note and choose a MIDI output first', true);
+        };
         openDlg('dlg-item');
       }
       function readItem() {
@@ -2246,19 +2635,29 @@
         if (kind === 'verses') {
           const changed = g('it-book') !== v.book || g('it-ch') !== v.chapter || g('it-vs') !== v.verse || g('it-tr').toUpperCase() !== v.tr;
           Object.assign(v, { book: g('it-book'), chapter: g('it-ch'), verse: g('it-vs'), tr: (g('it-tr') || BIBLE.defaultTr(g('it-lang'))).toUpperCase(), lang: g('it-lang'), text: $('it-text').value.trim() });
-          if (changed && v.text === (prof()[kind][i].text || '')) v.text = '';   // reference changed: look the text up again when shown
+          if (changed && v.text === (prof()[kind][i].text || '')) v.text = '';
+          // reference changed: look the text up again when shown
         }
         const note = g('it-note'), vel = g('it-vel'), ch = g('it-ch2');
-        if (note || vel || ch) v.midi = { note, vel, ch }; else delete v.midi;
+        if (note || vel || ch) v.midi = { note, vel, ch };
+        else delete v.midi;
         return v;
       }
       $('it-save').onclick = () => {
         if (!editing) return;
         const v = readItem();
         if ((editing.kind === 'speakers' && !v.name) || (editing.kind === 'messages' && !v.line1)) return toast('The main text can’t be empty', true);
-        prof()[editing.kind][editing.i] = v; saveDB(); renderList(); $('dlg-item').close(); toast('Saved');
+        prof()[editing.kind][editing.i] = v;
+        saveDB();
+        renderList();
+        $('dlg-item').close();
+        toast('Saved');
       };
-      $('it-load').onclick = () => { if (!editing) return; loadItem(editing.kind, readItem()); $('dlg-item').close(); };
+      $('it-load').onclick = () => {
+        if (!editing) return;
+        loadItem(editing.kind, readItem());
+        $('dlg-item').close();
+      };
 
       /* Book suggestions */
       $('books').innerHTML = ['Genesis', 'Exodus', 'Psalms', 'Proverbs', 'Isaiah', 'Matthew', 'Mark', 'Luke', 'John', 'Acts', 'Romans', '1 Corinthians', '2 Corinthians', 'Galatians', 'Ephesians', 'Philippians', 'Colossians', 'Hebrews', 'James', '1 Peter', '1 John', 'Revelation', 'Génesis', 'Salmos', 'Proverbios', 'Isaías', 'Mateo', 'Marcos', 'Lucas', 'Juan', 'Hechos', 'Romanos', 'Efesios', 'Filipenses', 'Hebreos', 'Santiago', 'Apocalipsis'].map(b => `<option value="${b}">`).join('');
@@ -2277,45 +2676,92 @@
         document.querySelectorAll('#scTabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.s === scTab)));
         document.querySelectorAll('[data-only]').forEach(el => el.style.display = el.dataset.only.split(' ').includes(scTab) ? '' : 'none');
         $('sc-lang').value = scLang();
-        $('sc-h1').value = s.h1 || ''; $('sc-h1').placeholder = d[scTab].h1;
-        $('sc-h2').value = s.h2 || ''; $('sc-h2').placeholder = d[scTab].h2;
-        $('sc-sub').value = s.sub || ''; $('sc-sub').placeholder = d[scTab].sub || '';
+        $('sc-h1').value = s.h1 || '';
+        $('sc-h1').placeholder = d[scTab].h1;
+        $('sc-h2').value = s.h2 || '';
+        $('sc-h2').placeholder = d[scTab].h2;
+        $('sc-sub').value = s.sub || '';
+        $('sc-sub').placeholder = d[scTab].sub || '';
         $('sc-give').value = s.give || '';
-        $('sc-cd').value = s.countdown || 'auto'; $('sc-min').value = s.minutes || ''; $('sc-min').disabled = $('sc-cd').value !== 'minutes';
-        $('svc-name').value = sv.name || ''; $('svc-name').placeholder = d.svc.name;
-        $('svc-day').value = sv.day || ''; $('svc-day').placeholder = d.svc.day;
+        $('sc-cd').value = s.countdown || 'auto';
+        $('sc-min').value = s.minutes || '';
+        $('sc-min').disabled = $('sc-cd').value !== 'minutes';
+        $('svc-name').value = sv.name || '';
+        $('svc-name').placeholder = d.svc.name;
+        $('svc-day').value = sv.day || '';
+        $('svc-day').placeholder = d.svc.day;
         $('svc-time').value = sv.time || '';
-        renderSceneSelect(); renderScreenFound(); schedulePreview();
+        renderSceneSelect();
+        renderScreenFound();
+        schedulePreview();
       }
       function saveScreenForm() {
         const s = scr(), sv = svc();
-        s.lang = $('sc-lang').value; s.h1 = $('sc-h1').value.trim(); s.h2 = $('sc-h2').value.trim(); s.sub = $('sc-sub').value.trim();
-        s.give = $('sc-give').value.trim(); s.countdown = $('sc-cd').value; s.minutes = $('sc-min').value.trim();
-        sv.name = $('svc-name').value.trim(); sv.day = $('svc-day').value.trim(); sv.time = $('svc-time').value.trim();
+        s.lang = $('sc-lang').value;
+        s.h1 = $('sc-h1').value.trim();
+        s.h2 = $('sc-h2').value.trim();
+        s.sub = $('sc-sub').value.trim();
+        s.give = $('sc-give').value.trim();
+        s.countdown = $('sc-cd').value;
+        s.minutes = $('sc-min').value.trim();
+        sv.name = $('svc-name').value.trim();
+        sv.day = $('svc-day').value.trim();
+        sv.time = $('svc-time').value.trim();
         $('sc-min').disabled = s.countdown !== 'minutes';
-        saveDB(); schedulePreview();
+        saveDB();
+        schedulePreview();
       }
       ['sc-h1', 'sc-h2', 'sc-sub', 'sc-give', 'sc-min', 'svc-name', 'svc-day', 'svc-time'].forEach(id => $(id).addEventListener('input', saveScreenForm));
       ['sc-cd'].forEach(id => $(id).addEventListener('change', saveScreenForm));
-      $('sc-lang').addEventListener('change', () => { saveScreenForm(); loadScreenForm(); });
-      $('sc-scene').addEventListener('change', () => { scr().scene = $('sc-scene').value; saveDB(); });
-      $('scTabs').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; scTab = b.dataset.s; prof().ui.screenTab = scTab; saveDB(); loadScreenForm(); });
-      $('sc-reset').onclick = () => { const s = scr();['h1', 'h2', 'sub', 'give'].forEach(k => delete s[k]); saveDB(); loadScreenForm(); toast('Wording reset to the defaults'); };
+      $('sc-lang').addEventListener('change', () => {
+        saveScreenForm();
+        loadScreenForm();
+      });
+      $('sc-scene').addEventListener('change', () => {
+        scr().scene = $('sc-scene').value;
+        saveDB();
+      });
+      $('scTabs').addEventListener('click', e => {
+        const b = e.target.closest('button');
+        if (!b) return;
+        scTab = b.dataset.s;
+        prof().ui.screenTab = scTab;
+        saveDB();
+        loadScreenForm();
+      });
+      $('sc-reset').onclick = () => {
+        const s = scr();['h1', 'h2', 'sub', 'give'].forEach(k => delete s[k]);
+        saveDB();
+        loadScreenForm();
+        toast('Wording reset to the defaults');
+      };
 
       /* settings -> URL options understood by the screen pages */
       function screenSettings(name, forPreview) {
         const s = prof().screens[name], sv = svc(), o = {};
         if (s.lang === 'es') o.lang = 'es';
-        if (s.h1) o.headline = s.h1; if (s.h2) o.headline2 = s.h2;
+        if (s.h1) o.headline = s.h1;
+        if (s.h2) o.headline2 = s.h2;
         if (name !== 'starting' && s.sub) o.subtitle = s.sub;
         if (name === 'thanks' && s.give) o.give_url = s.give;
-        if (sv.name) o.service_name = sv.name; if (sv.day) o.service_day = sv.day;
+        if (sv.name) o.service_name = sv.name;
+        if (sv.day) o.service_day = sv.day;
         if (name === 'starting') {
           const cd = s.countdown || 'auto';
           if (cd === 'off') o.countdown = 'off';
-          else if (cd === 'minutes') { const m = parseFloat(s.minutes) || 10; if (forPreview) o.minutes = m; else o.until = Date.now() + m * 60000; }
-          else if (cd === 'time') { if (sv.time) o.service_time = sv.time; else o.countdown = 'auto'; }
-          else { o.countdown = 'auto'; if (sv.time) o.service_time = sv.time; }
+          else if (cd === 'minutes') {
+            const m = parseFloat(s.minutes) || 10;
+            if (forPreview) o.minutes = m;
+            else o.until = Date.now() + m * 60000;
+          }
+          else if (cd === 'time') {
+            if (sv.time) o.service_time = sv.time;
+            else o.countdown = 'auto';
+          }
+          else {
+            o.countdown = 'auto';
+            if (sv.time) o.service_time = sv.time;
+          }
         } else if (sv.time) o.service_time = sv.time;
         return o;
       }
@@ -2329,7 +2775,8 @@
       }
       function applyScreen(name) {
         const settings = screenSettings(name), rev = Date.now().toString(36);
-        prof().screens[name].applied = { settings, rev }; saveDB();
+        prof().screens[name].applied = { settings, rev };
+        saveDB();
         return send({ action: 'screen', screen: name, settings, rev });
       }
       $('sc-apply').onclick = () => applyScreen(scTab).then(() => toast(SCREEN_LABEL[scTab] + ' updated' + (screensSeen.has(scTab) ? '' : ' (screen not found in OBS yet)'))).catch(() => { });
@@ -2338,8 +2785,13 @@
         applyScreen(scTab).then(() => {
           const scene = scr().scene;
           if (!scene) return toast('Choose the OBS scene for this screen to switch to it', true);
-          return client.request('SetCurrentProgramScene', { sceneName: scene }).then(() => { markProgram(scene); toast(SCREEN_LABEL[scTab] + ' is live'); });
-        }).catch(e => { if (e) toast('Could not switch scene: ' + e.message, true); });
+          return client.request('SetCurrentProgramScene', { sceneName: scene }).then(() => {
+            markProgram(scene);
+            toast(SCREEN_LABEL[scTab] + ' is live');
+          });
+        }).catch(e => {
+          if (e) toast('Could not switch scene: ' + e.message, true);
+        });
       };
       function renderScreenFound() {
         const seen = screensSeen.get(scTab);
@@ -2348,7 +2800,8 @@
       }
       function renderSceneSelect() {
         const cur = scr().scene || '';
-        const names = sceneNames.slice(); if (cur && !names.includes(cur)) names.push(cur);
+        const names = sceneNames.slice();
+        if (cur && !names.includes(cur)) names.push(cur);
         $('sc-scene').innerHTML = '<option value="">— choose —</option>' + names.map(n => `<option${n === cur ? ' selected' : ''}>${escH(n)}</option>`).join('');
       }
 
@@ -2362,30 +2815,57 @@
           sceneNames = scenes.map(s => s.sceneName);
           $('scenes').innerHTML = scenes.length ? scenes.map(s => `<button class="scene" data-scene="${escH(s.sceneName)}" title="${escH(s.sceneName)}"><i class="thumb"></i><span>${escH(s.sceneName)}</span></button>`).join('')
             : '<span class="muted">No scenes found.</span>';
-          markProgram(r.currentProgramSceneName); renderSceneSelect(); refreshThumbs(); refreshProgram();
-        } catch (e) { console.warn('GetSceneList failed', e); }
+          markProgram(r.currentProgramSceneName);
+          renderSceneSelect();
+          refreshThumbs();
+          refreshProgram();
+        } catch (e) {
+          console.warn('GetSceneList failed', e);
+        }
       }
-      function markProgram(name) { programScene = name; document.querySelectorAll('.scene').forEach(b => b.classList.toggle('pgm', b.dataset.scene === name)); refreshProgram(); }
+      function markProgram(name) {
+        programScene = name;
+        document.querySelectorAll('.scene').forEach(b => b.classList.toggle('pgm', b.dataset.scene === name));
+        refreshProgram();
+      }
       $('scenes').addEventListener('click', e => {
-        const b = e.target.closest('.scene'); if (!b || !client) return;
+        const b = e.target.closest('.scene');
+        if (!b || !client) return;
         client.request('SetCurrentProgramScene', { sceneName: b.dataset.scene }).then(() => markProgram(b.dataset.scene)).catch(err => toast('Could not switch scene: ' + err.message, true));
       });
       const shot = (name, w, q) => client.request('GetSourceScreenshot', { sourceName: name, imageFormat: 'jpg', imageWidth: w, imageCompressionQuality: q }).then(r => r.imageData);
       let pgmBusy = false, thumbsBusy = false, noShots = false;
-      const pgmToggle = seg('pgm-toggle', prof().ui.programPreview ? 'on' : 'off', v => { prof().ui.programPreview = v === 'on'; saveDB(); $('program').style.display = v === 'on' ? '' : 'none'; refreshProgram(); });
+      const pgmToggle = seg('pgm-toggle', prof().ui.programPreview ? 'on' : 'off', v => {
+        prof().ui.programPreview = v === 'on';
+        saveDB();
+        $('program').style.display = v === 'on' ? '' : 'none';
+        refreshProgram();
+      });
       $('program').style.display = prof().ui.programPreview ? '' : 'none';
       async function refreshProgram() {
         if (pgmBusy || noShots || !prof().ui.programPreview || !client || !client.ready || !programScene || document.hidden) return;
         pgmBusy = true;
-        try { $('pgmImg').src = await shot(programScene, 480, 70); $('pgmNote').textContent = ''; }
-        catch (e) { $('pgmNote').textContent = 'Preview not available'; if (/not|unknown|invalid/i.test(e.message)) noShots = true; }
+        try {
+          $('pgmImg').src = await shot(programScene, 480, 70);
+          $('pgmNote').textContent = '';
+        }
+        catch (e) {
+          $('pgmNote').textContent = 'Preview not available';
+          if (/not|unknown|invalid/i.test(e.message)) noShots = true;
+        }
         pgmBusy = false;
       }
       async function refreshThumbs() {
         if (thumbsBusy || noShots || !client || !client.ready || document.hidden) return;
         thumbsBusy = true;
         for (const b of document.querySelectorAll('.scene')) {
-          try { const img = await shot(b.dataset.scene, 160, 50); const t = b.querySelector('.thumb'); if (t) t.style.backgroundImage = `url("${img}")`; } catch (e) { break; }
+          try {
+            const img = await shot(b.dataset.scene, 160, 50);
+            const t = b.querySelector('.thumb');
+            if (t) t.style.backgroundImage = `url("${img}")`;
+          } catch (e) {
+            break;
+          }
         }
         thumbsBusy = false;
       }
@@ -2402,34 +2882,92 @@
       }
       function switchProfile(id) {
         if (!DB.list.some(p => p.id === id)) return;
-        DB.active = id; saveDB();
-        loadFields(); mPos.set(prof().form['m-pos'] || 'bottom');
+        DB.active = id;
+        saveDB();
+        loadFields();
+        mPos.set(prof().form['m-pos'] || 'bottom');
         lookedUp = prof().lookedUp || '';
-        wmMode.set(prof().watermark); pgmToggle.set(prof().ui.programPreview ? 'on' : 'off'); $('program').style.display = prof().ui.programPreview ? '' : 'none';
+        wmMode.set(prof().watermark);
+        pgmToggle.set(prof().ui.programPreview ? 'on' : 'off');
+        $('program').style.display = prof().ui.programPreview ? '' : 'none';
         scTab = prof().ui.screenTab || 'starting';
-        updateRefLine(); renderProfiles(); renderPos(); renderList(); renderMidiMap(); renderOnAir(); loadScreenForm(); previewAll();
+        updateRefLine();
+        renderProfiles();
+        renderPos();
+        renderList();
+        renderMidiMap();
+        renderOnAir();
+        loadScreenForm();
+        previewAll();
         sendWatermark();
       }
-      $('profileSel').onchange = e => { switchProfile(e.target.value); toast('Profile: ' + prof().name); };
-      $('profilesBtn').onclick = () => { renderProfiles(); $('pf-incpw').checked = false; openDlg('dlg-profiles'); };
-      $('pf-rename').onclick = () => { const n = $('pf-name').value.trim(); if (!n) return need('pf-name'); prof().name = n; saveDB(); renderProfiles(); toast('Renamed'); };
-      $('pf-create').onclick = () => {
-        const n = $('pf-new').value.trim(); if (!n) return need('pf-new');
-        const p = newProfile(n, $('pf-newlang').value); DB.list.push(p); $('pf-new').value = ''; switchProfile(p.id); toast('Created ' + n);
+      $('profileSel').onchange = e => {
+        switchProfile(e.target.value);
+        toast('Profile: ' + prof().name);
       };
-      $('pf-dup').onclick = () => { const p = cleanProfile(clone(prof())); p.id = uid(); p.name = prof().name + ' (copy)'; DB.list.push(p); switchProfile(p.id); toast('Duplicated'); };
+      $('profilesBtn').onclick = () => {
+        renderProfiles();
+        $('pf-incpw').checked = false;
+        openDlg('dlg-profiles');
+      };
+      $('pf-rename').onclick = () => {
+        const n = $('pf-name').value.trim();
+        if (!n) return need('pf-name');
+        prof().name = n;
+        saveDB();
+        renderProfiles();
+        toast('Renamed');
+      };
+      $('pf-create').onclick = () => {
+        const n = $('pf-new').value.trim();
+        if (!n) return need('pf-new');
+        const p = newProfile(n, $('pf-newlang').value);
+        DB.list.push(p);
+        $('pf-new').value = '';
+        switchProfile(p.id);
+        toast('Created ' + n);
+      };
+      $('pf-dup').onclick = () => {
+        const p = cleanProfile(clone(prof()));
+        p.id = uid();
+        p.name = prof().name + ' (copy)';
+        DB.list.push(p);
+        switchProfile(p.id);
+        toast('Duplicated');
+      };
       let delArm = null;
       $('pf-del').onclick = () => {
         const b = $('pf-del');
         if (DB.list.length < 2) return;
-        if (!b.classList.contains('arm')) { b.classList.add('arm'); b.textContent = 'Click again to delete'; clearTimeout(delArm); delArm = setTimeout(() => { b.classList.remove('arm'); b.textContent = 'Delete'; }, 3000); return; }
-        clearTimeout(delArm); b.classList.remove('arm'); b.textContent = 'Delete';
-        const gone = prof().name; DB.list = DB.list.filter(p => p.id !== DB.active); switchProfile(DB.list[0].id); toast('Deleted ' + gone);
+        if (!b.classList.contains('arm')) {
+          b.classList.add('arm');
+          b.textContent = 'Click again to delete';
+          clearTimeout(delArm);
+          delArm = setTimeout(() => {
+            b.classList.remove('arm');
+            b.textContent = 'Delete';
+          }, 3000);
+          return;
+        }
+        clearTimeout(delArm);
+        b.classList.remove('arm');
+        b.textContent = 'Delete';
+        const gone = prof().name;
+        DB.list = DB.list.filter(p => p.id !== DB.active);
+        switchProfile(DB.list[0].id);
+        toast('Deleted ' + gone);
       };
       function download(name, obj) {
         const blob = new Blob([JSON.stringify(obj, null, 2)], { type: 'application/json' });
-        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
-        document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = name;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          URL.revokeObjectURL(a.href);
+          a.remove();
+        }, 500);
       }
       const slug = n => String(n).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'profile';
       function exportObj(profiles) {
@@ -2437,8 +2975,14 @@
         if ($('pf-incpw').checked) device.pw = DEV.pw;
         return { app: 'nlc-live-graphics', type: 'profiles', version: 2, exported: new Date().toISOString(), device, profiles: clone(profiles) };
       }
-      $('pf-export').onclick = () => { download('nlc-profile-' + slug(prof().name) + '.json', exportObj([prof()])); toast('Exported ' + prof().name); };
-      $('pf-exportall').onclick = () => { download('nlc-profiles-all.json', exportObj(DB.list)); toast('Exported ' + DB.list.length + ' profiles'); };
+      $('pf-export').onclick = () => {
+        download('nlc-profile-' + slug(prof().name) + '.json', exportObj([prof()]));
+        toast('Exported ' + prof().name);
+      };
+      $('pf-exportall').onclick = () => {
+        download('nlc-profiles-all.json', exportObj(DB.list));
+        toast('Exported ' + DB.list.length + ' profiles');
+      };
       $('pf-import').onclick = () => $('pf-file').click();
       $('pf-file').onchange = async e => {
         let added = 0, replaced = 0, first = null, devChanged = false;
@@ -2451,29 +2995,73 @@
               const p = cleanProfile(raw);
               let i = DB.list.findIndex(x => x.id === p.id);
               if (i < 0) i = DB.list.findIndex(x => x.name.trim().toLowerCase() === p.name.trim().toLowerCase());
-              if (i >= 0) { p.id = DB.list[i].id; DB.list[i] = p; replaced++; } else { DB.list.push(p); added++; }
+              if (i >= 0) {
+                p.id = DB.list[i].id;
+                DB.list[i] = p;
+                replaced++;
+              } else {
+                DB.list.push(p);
+                added++;
+              }
               first = first || p.id;
             });
             const d = data && data.device;
             if (d && typeof d === 'object') {
-              ['host', 'port', 'channel', 'midiOut', 'naming', 'pw'].forEach(k => { if (typeof d[k] === 'string' && d[k] !== '') { DEV[k] = d[k]; devChanged = true; } });
+              ['host', 'port', 'channel', 'midiOut', 'naming', 'pw'].forEach(k => {
+                if (typeof d[k] === 'string' && d[k] !== '') {
+                  DEV[k] = d[k];
+                  devChanged = true;
+                }
+              });
             }
-          } catch (err) { toast('Could not import ' + file.name + ': ' + err.message, true); }
+          } catch (err) {
+            toast('Could not import ' + file.name + ': ' + err.message, true);
+          }
         }
         e.target.value = '';
-        if (devChanged) { saveDev(); $('host').value = DEV.host; $('port').value = DEV.port; $('pw').value = DEV.pw; $('channel').value = DEV.channel; renderMidiOuts(); }
-        if (first) { switchProfile(first); toast(`Imported: ${added} new, ${replaced} updated`); }
+        if (devChanged) {
+          saveDev();
+          $('host').value = DEV.host;
+          $('port').value = DEV.port;
+          $('pw').value = DEV.pw;
+          $('channel').value = DEV.channel;
+          renderMidiOuts();
+        }
+        if (first) {
+          switchProfile(first);
+          toast(`Imported: ${added} new, ${replaced} updated`);
+        }
       };
 
       /* ---------- start ---------- */
       const top = $('top');
       const setStick = () => document.documentElement.style.setProperty('--stick', top.offsetHeight + 'px');
-      setStick(); if (window.ResizeObserver) new ResizeObserver(setStick).observe(top); else addEventListener('resize', setStick);
-      renderProfiles(); renderPos(); renderMidiMap(); renderOnAir(); loadScreenForm();
+      setStick();
+      if (window.ResizeObserver) new ResizeObserver(setStick).observe(top);
+      else addEventListener('resize', setStick);
+      renderProfiles();
+      renderPos();
+      renderMidiMap();
+      renderOnAir();
+      loadScreenForm();
       if (DEV.midiOn) midiStart(false);
       connect();
-      document.addEventListener('visibilitychange', () => { if (!document.hidden) { refreshProgram(); refreshThumbs(); } });
-      window.NLC_PANEL = { get current() { return current; }, get overlays() { return overlays.size; }, noteNum, get DB() { return DB; } };   // for testing
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+          refreshProgram();
+          refreshThumbs();
+        }
+      });
+      window.NLC_PANEL = {
+        get current() {
+          return current;
+        }, get overlays() {
+          return overlays.size;
+        }, noteNum, get DB() {
+          return DB;
+        }
+      };
+      // for testing
     })();
   </script>
 </body>
